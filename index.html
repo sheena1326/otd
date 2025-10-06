@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive New Car Negotiation Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: The SPA is designed as a linear, three-phase journey (Preparation, Negotiation, Finalizing) mirroring the source guide. This sequential structure is the most intuitive for a procedural task, guiding the user from start to finish. Key interactions include an OTD calculator to make the core concept tangible, interactive cards for terminology, and one-click script copying. This transforms the static guide into an active preparation toolkit, enhancing user understanding and confidence. The OTD calculator is enhanced with state-specific lookups for sales tax and fees to provide more accurate preparation figures. -->
+    <!-- Visualization & Content Choices: The guide's content is primarily procedural, so the focus is on interactive elements over data charts. Report Info: OTD Formula -> Goal: Inform/Organize -> Viz: Interactive JS Calculator with State Selection. Report Info: Key Terms -> Goal: Inform -> Viz: Clickable Cards (HTML/JS). Report Info: Negotiation Tactics/Scripts -> Goal: Inform/Organize -> Viz: Interactive "Reveal" Cards with Copy Buttons (HTML/JS). Report Info: Process Flow (e.g., "Three Buckets") -> Goal: Organize -> Viz: Simple Diagram (HTML/Tailwind). This structure uses simple, effective web elements to make the guide actionable. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF7;
+            color: #333333;
+        }
+        .nav-link {
+            transition: color 0.3s ease, border-bottom-color 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #6B7A8F;
+            border-bottom-color: #6B7A8F;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .btn-primary {
+            background-color: #6B7A8F;
+            color: #FFFFFF;
+        }
+        .btn-primary:hover {
+            background-color: #59677c;
+        }
+        .btn-secondary {
+            background-color: #D6A25B;
+            color: #FFFFFF;
+        }
+        .btn-secondary:hover {
+            background-color: #c0904f;
+        }
+        .accent-text {
+            color: #D6A25B;
+        }
+        .phase-icon {
+            background-color: #6B7A8F;
+            color: #FFFFFF;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold text-gray-800">Car Negotiation Pro</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#phase1" class="nav-link font-medium text-gray-600 pb-1">Preparation</a>
+                <a href="#phase2" class="nav-link font-medium text-gray-600 pb-1">Negotiation</a>
+                <a href="#phase3" class="nav-link font-medium text-gray-600 pb-1">Finalizing</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+        <section class="text-center mb-12">
+            <h2 class="text-3xl md:text-5xl font-extrabold mb-4">Master Your New Car Deal</h2>
+            <p class="max-w-3xl mx-auto text-lg text-gray-600">This interactive guide will walk you through a proven strategy for getting the best price. The secret? **Focus exclusively on the final "Out-The-Door" (OTD) price.**</p>
+        </section>
+        
+        <!-- Hero Image -->
+        <div class="mb-16 rounded-xl overflow-hidden shadow-2xl">
+            <img 
+                src="https://placehold.co/1200x300/6B7A8F/ffffff?text=Smart+Car+Buying" 
+                alt="Smart Car Buying Strategy Illustration" 
+                class="w-full h-auto object-cover" 
+                onerror="this.onerror=null;this.src='https://placehold.co/1200x300/D6A25B/ffffff?text=Negotiation+Success'"
+            >
+        </div>
+
+        <!-- Phase 1: Preparation -->
+        <section id="phase1" class="mb-20">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="phase-icon">1</div>
+                <h3 class="text-3xl font-bold text-gray-800">Phase 1: Deep Research & Preparation</h3>
+            </div>
+            <p class="text-lg text-gray-600 mb-10 max-w-4xl">This is where you build all your leverage. Before you even think about contacting a dealer, you must become an expert on the vehicle, its true cost, and your own budget. A well-prepared buyer is a confident negotiator.</p>
+            
+            <div class="space-y-8">
+                <article class="card p-6 md:p-8">
+                    <h4 class="text-2xl font-bold mb-4">Step 1: Determine Your Absolute Max OTD Price</h4>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <p class="mb-4 text-gray-700">First, know your numbers inside and out. Determine the total dollar amount you can spend, and secure financing from your own bank. This puts you in a position of power.</p>
+                             <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                <li><strong class="font-semibold text-gray-800">Set Your Budget:</strong> This is your non-negotiable "walk-away" number.</li>
+                            </ul>
+                            <h5 class="font-bold text-lg text-gray-800 mt-6 mb-3">Why Pre-Approval is Non-Negotiable</h5>
+                            <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+                                <li><strong class="font-semibold text-gray-800">Establish a Baseline:</strong> You instantly know the best possible interest rate (the **Buy Rate**), forcing the dealer to compete honestly.</li>
+                                <li><strong class="font-semibold text-gray-800">Focus on Price:</strong> It allows you to isolate the car's OTD price negotiation from the monthly payment distraction.</li>
+                                <li><strong class="font-semibold text-gray-800">Maximum Leverage:</strong> A guaranteed loan from an outside source means you can walk away if the dealer's financing terms are predatory.</li>
+                            </ul>
+                            <!-- Image 2: Research/Preparation -->
+                            <div class="mt-6 rounded-lg overflow-hidden">
+                                <img 
+                                    src="https://placehold.co/300x200/D6A25B/ffffff?text=Do+Your+Research" 
+                                    alt="Image illustrating research and preparation steps" 
+                                    class="w-full h-auto object-cover rounded-lg"
+                                    onerror="this.onerror=null;this.src='https://placehold.co/300x200/6B7A8F/ffffff?text=Preparation+is+Key'"
+                                >
+                            </div>
+                        </div>
+                        <div class="bg-slate-50 p-6 rounded-lg border">
+                            <h5 class="font-bold text-lg mb-3 text-gray-800">Interactive OTD Calculator</h5>
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="sellingPrice" class="block text-sm font-medium text-gray-700">Vehicle Selling Price ($)</label>
+                                    <input type="number" id="sellingPrice" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="e.g., 35000">
+                                </div>
+                                
+                                <!-- STATE SELECTION FIELD - Will be populated by JS -->
+                                <div>
+                                    <label for="stateSelect" class="block text-sm font-medium text-gray-700">Your State (Est. Tax & Fees Lookup)</label>
+                                    <select id="stateSelect" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                        <!-- Options populated by JavaScript -->
+                                    </select>
+                                </div>
+
+                                <!-- TAX RATE DISPLAY (Read-only) -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Est. Sales Tax Rate (%)</label>
+                                    <p id="salesTaxDisplay" data-tax-rate="0" class="mt-1 block w-full p-2 bg-white rounded-md border border-gray-300 shadow-sm sm:text-sm font-semibold text-gray-800">--</p>
+                                </div>
+
+                                <!-- FEES INPUT (Read-only) -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Est. Fees (Reg, Title, Doc) ($)</label>
+                                    <input type="number" id="fees" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm bg-gray-100" placeholder="0" readonly>
+                                </div>
+                                
+                                <button id="calculateOtd" class="w-full btn-primary font-bold py-2 px-4 rounded-md transition-transform duration-200 hover:scale-105">Calculate</button>
+                            </div>
+                            <div id="otdResult" class="mt-4 text-center hidden p-4 bg-blue-100 rounded-lg">
+                                <p class="font-medium text-gray-700">Estimated Out-The-Door Price:</p>
+                                <p id="otdValue" class="text-2xl font-bold text-blue-800"></p>
+                            </div>
+                            <p class="mt-3 text-xs text-gray-500 text-center">Fees and taxes are generalized estimates. Consult your state's DMV for exact figures.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="card p-6 md:p-8">
+                    <h4 class="text-2xl font-bold mb-4">Step 2: Master the Pricing Terminology</h4>
+                    <p class="text-gray-700 mb-6">Understanding these terms prevents confusion and allows you to negotiate effectively. Click each term to reveal a pro-tip.</p>
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="term-card border p-4 rounded-lg cursor-pointer hover:bg-gray-50">
+                            <h5 class="font-bold text-lg">MSRP</h5>
+                            <p class="text-sm text-gray-600">Manufacturer's Suggested Retail Price. The official "sticker price."</p>
+                            <p class="pro-tip hidden mt-2 text-sm text-blue-700 bg-blue-50 p-2 rounded"><strong>Pro-Tip:</strong> This is a starting point, not the final price. Always negotiate down from the MSRP.</p>
+                        </div>
+                        <div class="term-card border p-4 rounded-lg cursor-pointer hover:bg-gray-50">
+                            <h5 class="font-bold text-lg">Invoice Price</h5>
+                            <p class="text-sm text-gray-600">Roughly what the dealer paid the manufacturer for the car.</p>
+                            <p class="pro-tip hidden mt-2 text-sm text-blue-700 bg-blue-50 p-2 rounded"><strong>Pro-Tip:</strong> Your goal is to negotiate a selling price as close to (or slightly above) the Invoice Price as possible.</p>
+                        </div>
+                        <div class="term-card border p-4 rounded-lg cursor-pointer hover:bg-gray-50">
+                            <h5 class="font-bold text-lg">Incentives</h5>
+                            <p class="text-sm text-gray-600">Rebates or special financing offered by the manufacturer.</p>
+                            <p class="pro-tip hidden mt-2 text-sm text-blue-700 bg-blue-50 p-2 rounded"><strong>Pro-Tip:</strong> Manufacturer rebates should be deducted *after* you've negotiated the final selling price.</p>
+                        </div>
+                        <div class="term-card border p-4 rounded-lg cursor-pointer hover:bg-gray-50">
+                            <h5 class="font-bold text-lg">Buy Rate</h5>
+                            <p class="text-sm text-gray-600">The wholesale interest rate the bank quotes the dealer for your loan.</p>
+                            <p class="pro-tip hidden mt-2 text-sm text-blue-700 bg-blue-50 p-2 rounded"><strong>Pro-Tip:</strong> The dealer marks this rate up (creating the **Sell Rate** you are offered) for profit. Use your pre-approved financing to force them to offer you a rate closer to the Buy Rate.</p>
+                        </div>
+                        <div class="term-card border p-4 rounded-lg cursor-pointer hover:bg-gray-50">
+                            <h5 class="font-bold text-lg accent-text">OTD Price</h5>
+                            <p class="text-sm text-gray-600">The total final price you pay. The only number that matters.</p>
+                            <p class="pro-tip hidden mt-2 text-sm text-blue-700 bg-blue-50 p-2 rounded"><strong>Pro-Tip:</strong> Ignore monthly payment talk. Only negotiate the OTD price to avoid hidden costs and fees.</p>
+                        </div>
+                    </div>
+                </article>
+                
+                <article class="card p-6 md:p-8">
+                    <h4 class="text-2xl font-bold mb-4">Step 3: Gather Competitive Quotes</h4>
+                    <p class="text-gray-700 mb-6">Contact at least 3-5 dealers via email. Requesting quotes this way forces them to compete for your business on price alone, before you ever step foot in a showroom. Use the script below to ensure you get the information you need.</p>
+                     <div class="bg-slate-50 p-6 rounded-lg border relative">
+                        <p id="emailScript" class="text-gray-800">"I am ready to purchase a [Year, Make, Model, Trim] in [Color] (VIN/Stock # if known). I am collecting the best out-the-door price quotes for this specific vehicle today. Please provide your lowest, all-inclusive OTD price, broken down by: selling price, documentation fee, and all other state/local fees. I am ready to move forward with the best offer."</p>
+                        <button id="copyScriptBtn" class="absolute top-4 right-4 btn-secondary text-sm font-semibold py-2 px-3 rounded-md transition-transform duration-200 hover:scale-105">Copy Script</button>
+                        <p id="copyFeedback" class="absolute top-4 right-4 text-sm font-semibold text-green-700 hidden">Copied!</p>
+                    </div>
+                    <p class="mt-4 text-gray-700 font-medium">Take the lowest OTD quote you receive and ask the other dealers to beat it. This creates a bidding war in your favor.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- Phase 2: Negotiation -->
+        <section id="phase2" class="mb-20">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="phase-icon">2</div>
+                <h3 class="text-3xl font-bold text-gray-800">Phase 2: The Negotiation</h3>
+            </div>
+            <p class="text-lg text-gray-600 mb-10 max-w-4xl">With your research complete, you can now engage with confidence. The key is to control the conversation by focusing on the OTD price and negotiating each component of the deal separately and in the correct order.</p>
+            
+            <div class="space-y-8">
+                <article class="card p-6 md:p-8">
+                    <h4 class="text-2xl font-bold mb-4">Step 4: Isolate the Negotiations (The Three Buckets)</h4>
+                    <p class="text-gray-700 mb-6">Never let the dealer combine these three distinct negotiations into one confusing monthly payment. Finalize them one by one, in this specific order, to maintain clarity and leverage.</p>
+                    <!-- Image 3: The Three Buckets Illustration -->
+                    <div class="mb-6 rounded-lg overflow-hidden shadow-md">
+                        <img 
+                            src="https://placehold.co/600x200/333333/ffffff?text=Isolate+The+Three+Buckets" 
+                            alt="Illustration of the three negotiation buckets: Price, Trade, Finance" 
+                            class="w-full h-auto object-cover"
+                            onerror="this.onerror=null;this.src='https://placehold.co/600x200/D6A25B/333333?text=Price+%7C+Trade-in+%7C+Financing'"
+                        >
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-6 text-center">
+                        <div class="border p-6 rounded-lg bg-slate-50">
+                            <div class="text-5xl mb-3">1️⃣</div>
+                            <h5 class="text-xl font-bold text-gray-800">Vehicle OTD Price</h5>
+                            <p class="text-gray-600 mt-2">This is your primary focus. Get a final, agreed-upon OTD price in writing before discussing anything else.</p>
+                        </div>
+                        <div class="border p-6 rounded-lg bg-slate-50">
+                            <div class="text-5xl mb-3">2️⃣</div>
+                            <h5 class="text-xl font-bold text-gray-800">Trade-in Value</h5>
+                            <p class="text-gray-600 mt-2">Only after the new car's price is locked in, negotiate your trade-in based on independent quotes.</p>
+                        </div>
+                         <div class="border p-6 rounded-lg bg-slate-50">
+                            <div class="text-5xl mb-3">3️⃣</div>
+                            <h5 class="text-xl font-bold text-gray-800">Financing</h5>
+                            <p class="text-gray-600 mt-2">Finally, present your pre-approved loan and ask the dealer if they can beat the interest rate. </p>
+                        </div>
+                    </div>
+                </article>
+                 <article class="card p-6 md:p-8">
+                    <h4 class="text-2xl font-bold mb-4">Step 5: Challenge Fees and Markups</h4>
+                    <p class="text-gray-700 mb-6">Once a dealer presents their price sheet, scrutinize every line item. Your goal is to eliminate unnecessary costs and ensure every fee is legitimate. Use these scripts to challenge common markups.</p>
+                    <div class="space-y-4">
+                        <div class="border p-4 rounded-lg">
+                            <h5 class="font-bold text-lg">Target the Selling Price</h5>
+                            <p class="text-gray-600">If the OTD is too high, focus your counter-offer here.</p>
+                            <p class="mt-2 text-sm italic text-blue-800 bg-blue-50 p-3 rounded">"I appreciate the work, but this price is still too high. To get to my target OTD of **$[Your Target OTD]**, we need to lower the selling price to **$[Your Target Selling Price]**."</p>
+                        </div>
+                        <div class="border p-4 rounded-lg">
+                            <h5 class="font-bold text-lg">Eliminate "Junk" Fees</h5>
+                            <p class="text-gray-600">Challenge add-ons like "paint protection," "VIN etching," or "market adjustments."</p>
+                             <p class="mt-2 text-sm italic text-blue-800 bg-blue-50 p-3 rounded">"I'm not interested in the **[Specific Add-on]**. Please remove this line item completely, or deduct the cost from the final selling price."</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="card p-6 md:p-8">
+                    <h4 class="text-2xl font-bold mb-4">Step 6: Master Negotiation Tactics</h4>
+                    <p class="text-gray-700 mb-6">Use professional tactics to stay in control. Your demeanor and willingness to walk away are your most powerful tools.</p>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-slate-50 p-6 rounded-lg border">
+                            <h5 class="font-bold text-lg">Silence is Power</h5>
+                            <p class="text-gray-600 mt-2">After you make a counter-offer, stop talking. Let the salesperson fill the silence. The first person to speak often weakens their position.</p>
+                        </div>
+                         <div class="bg-slate-50 p-6 rounded-lg border">
+                            <h5 class="font-bold text-lg">Avoid Emotional Attachment</h5>
+                            <p class="text-gray-600 mt-2">Act professional and analytical. If a dealer thinks you've fallen in love with a car, they know they have leverage.</p>
+                        </div>
+                    </div>
+                     <div class="mt-6 border p-6 rounded-lg bg-amber-50 border-amber-200">
+                        <h5 class="font-bold text-lg accent-text">The Ultimate Tactic: Be Ready to Walk</h5>
+                        <p class="text-gray-700 mt-2 mb-3">If the dealer won't meet your target, politely end the negotiation. A motivated dealer will often give you their best price as you are leaving.</p>
+                        <p class="text-sm italic text-amber-900">"Thank you for your time. Unfortunately, we are still too far apart. I'm going to proceed with the quote I received from [Competitor Dealership Name]. If you can beat their OTD of [Competitor's OTD Price] before I leave the parking lot, let me know."</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Phase 3: Finalizing -->
+        <section id="phase3" class="mb-16">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="phase-icon">3</div>
+                <h3 class="text-3xl font-bold text-gray-800">Phase 3: Finalizing the Deal</h3>
+            </div>
+            <p class="text-lg text-gray-600 mb-10 max-w-4xl">You've done the hard work and agreed on a price. The final step is to ensure the paperwork perfectly matches the deal you negotiated. Stay vigilant until you have the keys in your hand.</p>
+            <article class="card p-6 md:p-8">
+                <h4 class="text-2xl font-bold mb-4">Step 7: Review and Finalize the Purchase Order</h4>
+                <p class="text-gray-700 mb-6">The deal isn't done until the contract is signed. Before you sign anything, use this checklist to verify every detail on the final purchase order. Do not be rushed during this critical stage.</p>
+                <ul class="space-y-3">
+                    <li class="flex items-start">
+                        <input id="check1" type="checkbox" class="h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 mt-1">
+                        <label for="check1" class="ml-3 text-gray-700"><strong class="font-semibold text-gray-800">Verify Final OTD Price:</strong> Does the total on the contract exactly match the OTD price you agreed upon?</label>
+                    </li>
+                    <li class="flex items-start">
+                        <input id="check2" type="checkbox" class="h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 mt-1">
+                        <label for="check2" class="ml-3 text-gray-700"><strong class="font-semibold text-gray-800">Check Line Items:</strong> Are there any new, unexpected fees or add-ons that weren't on the price sheet?</label>
+                    </li>
+                    <li class="flex items-start">
+                        <input id="check3" type="checkbox" class="h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 mt-1">
+                        <label for="check3" class="ml-3 text-gray-700"><strong class="font-semibold text-gray-800">Confirm VIN:</strong> Does the Vehicle Identification Number (VIN) on the contract match the VIN on the car you test-drove?</label>
+                    </li>
+                    <li class="flex items-start">
+                        <input id="check4" type="checkbox" class="h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 mt-1">
+                        <label for="check4" class="ml-3 text-gray-700"><strong class="font-semibold text-gray-800">Review Financing Terms:</strong> If financing through the dealer, do the APR, term length, and monthly payment match your agreement?</label>
+                    </li>
+                </ul>
+                <div class="mt-8 p-4 bg-green-50 text-green-800 rounded-lg border border-green-200">
+                    <p><strong class="font-bold">Remember:</strong> Your ability to walk away is your greatest negotiation tool, right up until the moment you sign. Only sign when you are 100% confident in the deal.</p>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white mt-16">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <p>&copy; 2025 Car Negotiation Pro. Empowering smart car buyers.</p>
+        </div>
+    </footer>
+
+    <script>
+        // ESTIMATED STATE DATA: Sales Tax and Est. Fees (Reg, Title, Doc). 
+        // NOTE: These are generalized, estimated values for demonstration only. Actual rates and fees vary by county and are subject to change.
+        const stateData = {
+            'default': { name: 'Select State', taxRate: 0, fees: 0 },
+            'AL': { name: 'Alabama', taxRate: 4.00, fees: 450 },
+            'AK': { name: 'Alaska', taxRate: 0.00, fees: 350 }, // No state sales tax
+            'AZ': { name: 'Arizona', taxRate: 5.60, fees: 600 },
+            'AR': { name: 'Arkansas', taxRate: 6.50, fees: 500 },
+            'CA': { name: 'California', taxRate: 7.25, fees: 750 }, // High fees/Reg
+            'CO': { name: 'Colorado', taxRate: 2.90, fees: 500 },
+            'CT': { name: 'Connecticut', taxRate: 6.35, fees: 550 },
+            'DE': { name: 'Delaware', taxRate: 0.00, fees: 450 }, // No sales tax, 4.25% Doc fee on price
+            'FL': { name: 'Florida', taxRate: 6.00, fees: 800 }, // High doc fee cap
+            'GA': { name: 'Georgia', taxRate: 4.00, fees: 500 }, // TAVT tax simplified to rate
+            'HI': { name: 'Hawaii', taxRate: 4.00, fees: 400 },
+            'ID': { name: 'Idaho', taxRate: 6.00, fees: 450 },
+            'IL': { name: 'Illinois', taxRate: 6.25, fees: 650 },
+            'IN': { name: 'Indiana', taxRate: 7.00, fees: 500 },
+            'IA': { name: 'Iowa', taxRate: 6.00, fees: 450 },
+            'KS': { name: 'Kansas', taxRate: 6.50, fees: 500 },
+            'KY': { name: 'Kentucky', taxRate: 6.00, fees: 400 },
+            'LA': { name: 'Louisiana', taxRate: 4.45, fees: 550 },
+            'ME': { name: 'Maine', taxRate: 5.50, fees: 450 },
+            'MD': { name: 'Maryland', taxRate: 6.00, fees: 600 }, // Excise tax
+            'MA': { name: 'Massachusetts', taxRate: 6.25, fees: 500 },
+            'MI': { name: 'Michigan', taxRate: 6.00, fees: 550 },
+            'MN': { name: 'Minnesota', taxRate: 6.88, fees: 500 },
+            'MS': { name: 'Mississippi', taxRate: 5.00, fees: 450 },
+            'MO': { name: 'Missouri', taxRate: 4.23, fees: 500 },
+            'MT': { name: 'Montana', taxRate: 0.00, fees: 400 }, // No sales tax
+            'NE': { name: 'Nebraska', taxRate: 5.50, fees: 450 },
+            'NV': { name: 'Nevada', taxRate: 6.85, fees: 600 },
+            'NH': { name: 'New Hampshire', taxRate: 0.00, fees: 400 }, // No sales tax
+            'NJ': { name: 'New Jersey', taxRate: 6.63, fees: 500 },
+            'NM': { name: 'New Mexico', taxRate: 5.13, fees: 450 },
+            'NY': { name: 'New York', taxRate: 4.00, fees: 650 },
+            'NC': { name: 'North Carolina', taxRate: 3.00, fees: 400 }, // 3% Hwy Use Tax
+            'ND': { name: 'North Dakota', taxRate: 5.00, fees: 450 },
+            'OH': { name: 'Ohio', taxRate: 5.75, fees: 500 },
+            'OK': { name: 'Oklahoma', taxRate: 4.50, fees: 450 },
+            'OR': { name: 'Oregon', taxRate: 0.00, fees: 400 }, // No sales tax
+            'PA': { name: 'Pennsylvania', taxRate: 6.00, fees: 550 },
+            'RI': { name: 'Rhode Island', taxRate: 7.00, fees: 500 },
+            'SC': { name: 'South Carolina', taxRate: 5.00, fees: 400 }, // Max tax $500
+            'SD': { name: 'South Dakota', taxRate: 4.50, fees: 400 },
+            'TN': { name: 'Tennessee', taxRate: 7.00, fees: 450 },
+            'TX': { name: 'Texas', taxRate: 6.25, fees: 600 },
+            'UT': { name: 'Utah', taxRate: 6.10, fees: 500 },
+            'VT': { name: 'Vermont', taxRate: 6.00, fees: 450 },
+            'VA': { name: 'Virginia', taxRate: 4.15, fees: 500 }, // 4.15% Motor Vehicle Sales and Use Tax
+            'WA': { name: 'Washington', taxRate: 6.50, fees: 750 }, // High fees/Reg
+            'WV': { name: 'West Virginia', taxRate: 6.00, fees: 450 },
+            'WI': { name: 'Wisconsin', taxRate: 5.00, fees: 500 },
+            'WY': { name: 'Wyoming', taxRate: 4.00, fees: 400 }
+        };
+
+        const updateStateData = (selectedState) => {
+            const data = stateData[selectedState] || stateData['default'];
+            document.getElementById('salesTaxDisplay').textContent = `${data.taxRate.toFixed(2)}%`;
+            document.getElementById('salesTaxDisplay').setAttribute('data-tax-rate', data.taxRate);
+            document.getElementById('fees').value = data.fees;
+            
+            // Clear result when state changes
+            document.getElementById('otdResult').classList.add('hidden');
+        };
+
+        const populateStateSelect = () => {
+            const selectElement = document.getElementById('stateSelect');
+            // Clear existing options
+            selectElement.innerHTML = ''; 
+
+            // Add the default option first
+            let defaultOption = document.createElement('option');
+            defaultOption.value = 'default';
+            defaultOption.textContent = stateData['default'].name;
+            selectElement.appendChild(defaultOption);
+
+            // Dynamically add all other state options, sorted alphabetically
+            const sortedStateCodes = Object.keys(stateData)
+                .filter(key => key !== 'default')
+                .sort((a, b) => stateData[a].name.localeCompare(stateData[b].name));
+            
+            sortedStateCodes.forEach(code => {
+                let option = document.createElement('option');
+                option.value = code;
+                option.textContent = `${stateData[code].name} (${code})`;
+                selectElement.appendChild(option);
+            });
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const calculateBtn = document.getElementById('calculateOtd');
+            const stateSelect = document.getElementById('stateSelect');
+            
+            // 1. Populate the state dropdown menu
+            populateStateSelect();
+
+            // 2. Initialize state data on load
+            updateStateData(stateSelect.value);
+            
+            stateSelect.addEventListener('change', (e) => {
+                updateStateData(e.target.value);
+            });
+
+            calculateBtn.addEventListener('click', () => {
+                const sellingPrice = parseFloat(document.getElementById('sellingPrice').value) || 0;
+                
+                // Get tax rate from the data attribute set by the state selector
+                const salesTaxRate = parseFloat(document.getElementById('salesTaxDisplay').getAttribute('data-tax-rate')) || 0;
+                
+                const fees = parseFloat(document.getElementById('fees').value) || 0;
+
+                if (sellingPrice > 0) {
+                    const taxAmount = sellingPrice * (salesTaxRate / 100);
+                    const otdPrice = sellingPrice + taxAmount + fees;
+
+                    const otdResultDiv = document.getElementById('otdResult');
+                    const otdValueP = document.getElementById('otdValue');
+                    
+                    otdValueP.textContent = `$${otdPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                    otdResultDiv.classList.remove('hidden');
+                } else {
+                     const otdResultDiv = document.getElementById('otdResult');
+                    otdResultDiv.classList.add('hidden');
+                }
+            });
+            
+            const termCards = document.querySelectorAll('.term-card');
+            termCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const tip = card.querySelector('.pro-tip');
+                    tip.classList.toggle('hidden');
+                });
+            });
+
+            const copyScriptBtn = document.getElementById('copyScriptBtn');
+            const copyFeedback = document.getElementById('copyFeedback');
+            const emailScript = document.getElementById('emailScript');
+            
+            // Re-useable copy logic function
+            const copyText = (textToCopy) => {
+                 if (navigator.clipboard) {
+                    navigator.clipboard.writeText(textToCopy).then(() => {
+                        copyFeedback.classList.remove('hidden');
+                        copyScriptBtn.classList.add('hidden');
+                        setTimeout(() => {
+                            copyFeedback.classList.add('hidden');
+                            copyScriptBtn.classList.remove('hidden');
+                        }, 2000);
+                    });
+                } else {
+                    // Fallback for older environments/iframes
+                    const textarea = document.createElement('textarea');
+                    textarea.value = textToCopy;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+
+                    copyFeedback.classList.remove('hidden');
+                    copyScriptBtn.classList.add('hidden');
+                    setTimeout(() => {
+                        copyFeedback.classList.add('hidden');
+                        copyScriptBtn.classList.remove('hidden');
+                    }, 2000);
+                }
+            };
+
+            copyScriptBtn.addEventListener('click', () => {
+                const textToCopy = emailScript.textContent || emailScript.innerText;
+                copyText(textToCopy);
+            });
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section[id]');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+            sections.forEach(section => observer.observe(section));
+        });
+    </script>
+</body>
+</html>
